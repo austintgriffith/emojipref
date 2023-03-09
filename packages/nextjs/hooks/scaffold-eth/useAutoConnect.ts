@@ -31,7 +31,7 @@ const getInitialConnector = (
   connectors: Connector<any, any, any>[],
 ): { connector: Connector | undefined; chainId?: number } | undefined => {
   const allowBurner = config.enableBurnerWallet;
-  const isLocalChainSelected = process.env.NEXT_PUBLIC_NETWORK === "hardhat";
+  const isLocalChainSelected = true;
 
   if (!previousWalletId) {
     // The user was not connected to a wallet
