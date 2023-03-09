@@ -210,9 +210,6 @@ const Home: NextPage = () => {
       <>
         <div className="flex items-center flex-col flex-grow pt-10">
           <div className="px-5">
-            <h1 className="text-center mb-8">
-              <span className="block text-4xl font-bold">Emoji Prediction Market</span>
-            </h1>
             <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
               round <span className="text-xl font-bold">{round}</span>
             </div>
