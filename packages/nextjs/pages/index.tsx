@@ -34,7 +34,7 @@ const Home: NextPage = () => {
     Math.floor((Math.random() * 99999) % 256),
   ]);
 
-  const { writeAsync: register } = useScaffoldContractWrite("YourContract", "register", [address]);
+  const { writeAsync: register } = useScaffoldContractWrite("YourContract", "register", []);
 
   const [myPref, setMyPref] = React.useState(0);
 

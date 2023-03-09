@@ -32,6 +32,7 @@ contract YourContract is ERC20 {
     uint8[4] public indexOfDisplay;
 
     event Register(address indexed from);
+    
     function register() public {
         emit Register(msg.sender);
     }
