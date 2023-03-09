@@ -34,6 +34,8 @@ const Home: NextPage = () => {
     Math.floor((Math.random() * 99999) % 256),
   ]);
 
+  const { writeAsync: register } = useScaffoldContractWrite("YourContract", "register", [address]);
+
   const [myPref, setMyPref] = React.useState(0);
 
   const { writeAsync: setPreference, isLoading: isSetPrefLoading } = useScaffoldContractWrite(
@@ -197,6 +199,7 @@ const Home: NextPage = () => {
               toast.remove(toastId);
               setTimeout(() => {
                 setIsRequestingGas(false);
+                register();
               }, 5000);
             }
           }}

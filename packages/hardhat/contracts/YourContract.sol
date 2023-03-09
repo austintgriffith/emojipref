@@ -31,7 +31,10 @@ contract YourContract is ERC20 {
 
     uint8[4] public indexOfDisplay;
 
-
+    event Register(address indexed from);
+    function register() public {
+        emit Register(msg.sender);
+    }
 
     // Constructor: Called once on contract deployment
     // Check packages/hardhat/deploy/00_deploy_your_contract.ts
@@ -84,6 +87,7 @@ contract YourContract is ERC20 {
         preferences[round][msg.sender] = pref;
         prefCount[pref-1]++;
         counter[round]++;
+        register();
     }
 
     modifier isOwner() {
