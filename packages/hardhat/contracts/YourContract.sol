@@ -20,19 +20,23 @@ contract YourContract is ERC20 {
     
     bool public openToCollect;
 
-    uint8 public round; 
+    bool public openToReveal;
+
+    uint8 public round;
 
     mapping( uint8 => uint8 ) public bestPref;
 
     mapping( uint8 => uint8 ) public counter;
+    mapping( uint8 => uint8 ) public commitCounter;
 
     mapping( uint8 => mapping ( address => uint8) ) public preferences;
+    mapping( uint8 => mapping ( address => bytes32) ) public commits;
     uint8[] public prefCount = [0,0,0,0];
 
     uint8[4] public indexOfDisplay;
 
     event Register(address indexed from);
-    
+
     function register() public {
         emit Register(msg.sender);
     }
@@ -50,6 +54,13 @@ contract YourContract is ERC20 {
         round = 1;
     }
 
+    function endCommit() public isOwner {
+        require(!openToCollect, "Round has ended");
+        require(!openToReveal, "Already revealing");
+
+        openToReveal = true;
+    }
+
     function endRound() public isOwner {
         require(!openToCollect, "Round has ended");
         uint8 highestPref;
@@ -63,6 +74,7 @@ contract YourContract is ERC20 {
 
         prefCount = [0,0,0,0];
         openToCollect = true;
+        openToReveal = false;
     }
 
     function startNextRound( uint8 a, uint8 b, uint8 c, uint8 d ) public isOwner {
@@ -80,11 +92,31 @@ contract YourContract is ERC20 {
         _mint(msg.sender, 1 ether);
     }
 
-    function setPreference(uint8 pref) public {
+    function setCommit(bytes32 commitHash) public {
+        require(gameOn, "Game is not on");
+        require(!openToCollect, "Round has ended");
+        require(!openToReveal, "Commit round has ended");
+        require(commits[round][msg.sender]==0, "already set");
+        commits[round][msg.sender] = commitHash;
+        commitCounter[round]++;
+        register();
+    }
+
+    function setPreference(uint8 pref, string memory salt) public {
         require(gameOn, "Game is not on");
         require(!openToCollect, "Round has ended");
         require(preferences[round][msg.sender]==0, "already set");
         require(pref>0 && pref<5, "invalid preference");
+
+        bytes32 verificationHash = keccak256(
+            abi.encodePacked(pref, salt)
+        );
+
+        require(
+            verificationHash == commits[round][msg.sender],
+            "Verification hash doesn't match commit hash. Salt and/or pref not the same as commit."
+        );
+
         preferences[round][msg.sender] = pref;
         prefCount[pref-1]++;
         counter[round]++;
