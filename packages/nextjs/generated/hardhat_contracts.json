@@ -1,11 +1,11 @@
 {
-  "100": [
+  "11155111": [
     {
-      "name": "gnosis",
-      "chainId": "100",
+      "name": "sepolia",
+      "chainId": "11155111",
       "contracts": {
         "YourContract": {
-          "address": "0x2Ce7472b6C27C6017972d5779d9FB872fB3401A5",
+          "address": "0x0a7B90A0DE1fe046EAADb98C546592b57D8d1d19",
           "abi": [
             {
               "inputs": [
@@ -168,10 +168,72 @@
               "type": "function"
             },
             {
+              "inputs": [
+                {
+                  "internalType": "bytes32",
+                  "name": "_bytes32",
+                  "type": "bytes32"
+                }
+              ],
+              "name": "bytes32ToString",
+              "outputs": [
+                {
+                  "internalType": "string",
+                  "name": "",
+                  "type": "string"
+                }
+              ],
+              "stateMutability": "pure",
+              "type": "function"
+            },
+            {
               "inputs": [],
               "name": "collect",
               "outputs": [],
               "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint8",
+                  "name": "",
+                  "type": "uint8"
+                }
+              ],
+              "name": "commitCounter",
+              "outputs": [
+                {
+                  "internalType": "uint8",
+                  "name": "",
+                  "type": "uint8"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint8",
+                  "name": "",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "address",
+                  "name": "",
+                  "type": "address"
+                }
+              ],
+              "name": "commits",
+              "outputs": [
+                {
+                  "internalType": "bytes32",
+                  "name": "",
+                  "type": "bytes32"
+                }
+              ],
+              "stateMutability": "view",
               "type": "function"
             },
             {
@@ -227,6 +289,13 @@
                   "type": "bool"
                 }
               ],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [],
+              "name": "endCommit",
+              "outputs": [],
               "stateMutability": "nonpayable",
               "type": "function"
             },
@@ -321,6 +390,19 @@
             },
             {
               "inputs": [],
+              "name": "openToReveal",
+              "outputs": [
+                {
+                  "internalType": "bool",
+                  "name": "",
+                  "type": "bool"
+                }
+              ],
+              "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [],
               "name": "owner",
               "outputs": [
                 {
@@ -398,9 +480,27 @@
             {
               "inputs": [
                 {
+                  "internalType": "bytes32",
+                  "name": "commitHash",
+                  "type": "bytes32"
+                }
+              ],
+              "name": "setCommit",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
                   "internalType": "uint8",
                   "name": "pref",
                   "type": "uint8"
+                },
+                {
+                  "internalType": "string",
+                  "name": "salt",
+                  "type": "string"
                 }
               ],
               "name": "setPreference",
@@ -475,6 +575,25 @@
                 }
               ],
               "stateMutability": "view",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint8",
+                  "name": "_uint8",
+                  "type": "uint8"
+                }
+              ],
+              "name": "toByte",
+              "outputs": [
+                {
+                  "internalType": "bytes1",
+                  "name": "",
+                  "type": "bytes1"
+                }
+              ],
+              "stateMutability": "pure",
               "type": "function"
             },
             {

@@ -18,6 +18,7 @@ const Home: NextPage = () => {
   const { data: owner } = useScaffoldContractRead("YourContract", "owner", []);
 
   const { data: counter } = useScaffoldContractRead("YourContract", "counter", [round]);
+  const { data: commitCounter } = useScaffoldContractRead("YourContract", "commitCounter", [round]);
 
   // todo usecontractmultipleread
   const { data: firstEmoji } = useScaffoldContractRead("YourContract", "indexOfDisplay", [0]);
@@ -37,18 +38,40 @@ const Home: NextPage = () => {
   const { writeAsync: register } = useScaffoldContractWrite("YourContract", "register", []);
 
   const [myPref, setMyPref] = React.useState(0);
+  const [commitSalt, setCommitSalt] = React.useState();
+  const [commitHash, setCommitHash] = React.useState();
 
   const { writeAsync: setPreference, isLoading: isSetPrefLoading } = useScaffoldContractWrite(
     "YourContract",
     "setPreference",
-    [myPref],
+    [myPref, commitSalt],
   );
+
+  const { writeAsync: setCommit, isLoading: isSetCommitLoading } = useScaffoldContractWrite(
+    "YourContract",
+    "setCommit",
+    [commitHash],
+  );
+
+  function getRandomString(bytes) {
+    const randomValues = new Uint8Array(bytes);
+    crypto.getRandomValues(randomValues);
+    return Array.from(randomValues).map(intToHex).join("");
+  }
+
+  function intToHex(nr) {
+    return nr.toString(16).padStart(2, "0");
+  }
 
   const { data: savedPreference } = useScaffoldContractRead("YourContract", "preferences", [round, address]);
 
   const { writeAsync: endRound } = useScaffoldContractWrite("YourContract", "endRound", []);
 
+  const { writeAsync: endCommit } = useScaffoldContractWrite("YourContract", "endCommit", []);
+
   const { data: openToCollect } = useScaffoldContractRead("YourContract", "openToCollect", []);
+
+  const { data: openToReveal } = useScaffoldContractRead("YourContract", "openToReveal", []);
 
   const { data: bestPref } = useScaffoldContractRead("YourContract", "bestPref", [round]);
 
@@ -114,11 +137,19 @@ const Home: NextPage = () => {
     if (savedPreference) {
       cta.push(<div className="m-7 ">⏳ Waiting for round to end...</div>);
     } else if (myPref != 0) {
-      cta.push(
-        <button className={`m-7 btn btn-primary ${isSetPrefLoading ? "loading" : ""}`} onClick={setPreference}>
-          💾 Save
-        </button>,
-      );
+      if (openToReveal) {
+        cta.push(
+          <button className={`m-7 btn btn-primary ${isSetPrefLoading ? "loading" : ""}`} onClick={setPreference}>
+            🔎 Reveal
+          </button>,
+        );
+      } else {
+        cta.push(
+          <button className={`m-7 btn btn-primary ${isSetCommitLoading ? "loading" : ""}`} onClick={setCommit}>
+            💾 Save
+          </button>,
+        );
+      }
     } else {
       cta.push(<div className="m-7 ">👆 Pick your favorite emoji!</div>);
     }
@@ -152,7 +183,7 @@ const Home: NextPage = () => {
           </button>
         </div>,
       );
-    } else {
+    } else if (openToReveal) {
       adminRender.push(
         <div className="flex justify-center items-center gap-12 p-8">
           <button
@@ -165,12 +196,37 @@ const Home: NextPage = () => {
           </button>
         </div>,
       );
+    } else  {
+      adminRender.push(
+        <div className="flex justify-center items-center gap-12 p-8">
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              endCommit();
+            }}
+          >
+            endCommit()
+          </button>
+        </div>,
+      );
     }
   }
 
   useEffect(() => {
     setMyPref(0);
   }, [round]);
+
+  useEffect(() => {
+    const password = getRandomString(10);
+    setCommitSalt(password);
+
+    console.log("password: ", password);
+
+    const hash = ethers.utils.solidityKeccak256(["uint8", "string"], [myPref, password]);
+    setCommitHash(hash);
+
+    console.log("hash: ", hash);
+  }, [myPref]);
 
   const finalDisplay = [];
 
@@ -215,6 +271,9 @@ const Home: NextPage = () => {
           <div className="px-5">
             <div className="flex justify-center items-center gap-12 flex-col sm:flex-row">
               round <span className="text-xl font-bold">{round}</span>
+            </div>
+            <div className="flex justify-center items-center gap-12 flex-col sm:flex-row pt-4">
+              commits <span className="text-xl font-bold">{commitCounter}</span>
             </div>
             <div className="flex justify-center items-center gap-12 flex-col sm:flex-row pt-4">
               votes <span className="text-xl font-bold">{counter}</span>
