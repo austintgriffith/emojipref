@@ -1,11 +1,11 @@
 {
-  "11155111": [
+  "100": [
     {
-      "name": "sepolia",
-      "chainId": "11155111",
+      "name": "gnosis",
+      "chainId": "100",
       "contracts": {
         "YourContract": {
-          "address": "0x0a7B90A0DE1fe046EAADb98C546592b57D8d1d19",
+          "address": "0x9c89879290859f5a98DE2C5784B3b3349be61520",
           "abi": [
             {
               "inputs": [
@@ -165,25 +165,6 @@
                 }
               ],
               "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "bytes32",
-                  "name": "_bytes32",
-                  "type": "bytes32"
-                }
-              ],
-              "name": "bytes32ToString",
-              "outputs": [
-                {
-                  "internalType": "string",
-                  "name": "",
-                  "type": "string"
-                }
-              ],
-              "stateMutability": "pure",
               "type": "function"
             },
             {
@@ -575,25 +556,6 @@
                 }
               ],
               "stateMutability": "view",
-              "type": "function"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint8",
-                  "name": "_uint8",
-                  "type": "uint8"
-                }
-              ],
-              "name": "toByte",
-              "outputs": [
-                {
-                  "internalType": "bytes1",
-                  "name": "",
-                  "type": "bytes1"
-                }
-              ],
-              "stateMutability": "pure",
               "type": "function"
             },
             {
