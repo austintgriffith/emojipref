@@ -38,8 +38,8 @@ const Home: NextPage = () => {
   const { writeAsync: register } = useScaffoldContractWrite("YourContract", "register", []);
 
   const [myPref, setMyPref] = React.useState(0);
-  const [commitSalt, setCommitSalt] = React.useState();
-  const [commitHash, setCommitHash] = React.useState();
+  const [commitSalt, setCommitSalt] = React.useState("");
+  const [commitHash, setCommitHash] = React.useState("");
 
   const { writeAsync: setPreference, isLoading: isSetPrefLoading } = useScaffoldContractWrite(
     "YourContract",
@@ -53,13 +53,13 @@ const Home: NextPage = () => {
     [commitHash],
   );
 
-  function getRandomString(bytes) {
+  function getRandomString(bytes: any) {
     const randomValues = new Uint8Array(bytes);
     crypto.getRandomValues(randomValues);
     return Array.from(randomValues).map(intToHex).join("");
   }
 
-  function intToHex(nr) {
+  function intToHex(nr: any) {
     return nr.toString(16).padStart(2, "0");
   }
 
@@ -196,7 +196,7 @@ const Home: NextPage = () => {
           </button>
         </div>,
       );
-    } else  {
+    } else {
       adminRender.push(
         <div className="flex justify-center items-center gap-12 p-8">
           <button
